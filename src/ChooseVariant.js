@@ -19,10 +19,19 @@ export default function ChooseVariant(props) {
 }
 
 const Wrapper = styled.div`
-  & > button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30%, auto));
+  grid-gap: 10px;
+
+  button {
+    padding: 14px;
+    border: 1px solid #ddd;
+    color: #707070;
+    border-radius: 8px;
   }
 
-  & > button.selected {
+  & button.selected {
     background-color: #555;
   }
 `;

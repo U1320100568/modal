@@ -6,9 +6,8 @@ export default function SelectPlan(props) {
   const [step, setStep] = React.useState(0);
   return (
     <Wrapper>
-      {step === 0 ? (
-        <React.Fragment>
-          {["plan A", "plan B", "plan C"].map((key) => (
+      {step === 0
+        ? ["plan A", "plan B", "plan C"].map((key) => (
             <button
               key={key}
               className={values.plan === key ? "selected" : ""}
@@ -16,12 +15,9 @@ export default function SelectPlan(props) {
             >
               {key}
             </button>
-          ))}
-          <button onClick={() => setStep(1)}>NEXT</button>
-        </React.Fragment>
-      ) : step === 1 ? (
-        <React.Fragment>
-          {["tier 1", "tier 2", "tier 3"].map((key) => (
+          ))
+        : step === 1
+        ? ["tier 1", "tier 2", "tier 3"].map((key) => (
             <button
               key={key}
               className={values.tier === key ? "selected" : ""}
@@ -29,9 +25,23 @@ export default function SelectPlan(props) {
             >
               {key}
             </button>
-          ))}
-          <button onClick={() => setStep(0)}>PREV</button>
-          <button onClick={() => onSubmit(values)}>CONFIRM</button>
+          ))
+        : null}
+      {step === 0 ? (
+        <button onClick={() => setStep(1)} style={{ gridColumn: "3 / 4" }}>
+          NEXT
+        </button>
+      ) : step === 1 ? (
+        <React.Fragment>
+          <button onClick={() => setStep(0)} style={{ gridColumn: "2 / 3" }}>
+            PREV
+          </button>
+          <button
+            onClick={() => onSubmit(values)}
+            style={{ gridColumn: "3 / 4" }}
+          >
+            CONFIRM
+          </button>
         </React.Fragment>
       ) : null}
     </Wrapper>
@@ -39,10 +49,19 @@ export default function SelectPlan(props) {
 }
 
 const Wrapper = styled.div`
-  & > button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30%, auto));
+  grid-gap: 10px;
+
+  button {
+    padding: 14px;
+    border: 1px solid #ddd;
+    color: #707070;
+    border-radius: 8px;
   }
 
-  & > button.selected {
+  & button.selected {
     background-color: #555;
   }
 `;
