@@ -47,6 +47,7 @@ export default function Modal() {
           <div
             className="container"
             style={{ width: width || "auto", height: height || "auto" }}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="header">
               <div style={{ flex: 1 }}>{title}</div>
