@@ -1,25 +1,15 @@
 import React from "react";
+import {
+  Text,
+  View,
+  Animated,
+  TouchableOpacity,
+  Pressable,
+  Image,
+} from "react-native";
 
-const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
 const gap = 15;
 const radius = 20;
-const closeIcon = (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M6 18L18 6M6 6L18 18"
-      stroke="#545F71"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </svg>
-);
 
 //  put in other kind global state management instead as well.
 export const ModalContext = React.createContext({
@@ -97,19 +87,22 @@ export default function Modal() {
   } = modal || {};
   const [values, setValues] = React.useState(initValues);
   const [open, setOpen] = React.useState(false);
-  const [animOpacity, setAnimOpacity] = React.useState(0);
+  const animOpacity = React.useRef(new Animated.Value(0)).current;
   const _open = !!modal;
 
   React.useEffect(() => {
     (async () => {
       if (_open) {
         setOpen(true);
-        await delay(200);
-        setAnimOpacity(1);
+        Animated.timing(animOpacity, {
+          toValue: 1,
+          duration: 200,
+        }).start();
       } else {
-        setAnimOpacity(0);
-        await delay(200);
-        setOpen(false);
+        Animated.timing(animOpacity, {
+          toValue: 0,
+          duration: 200,
+        }).start(() => setOpen(false));
       }
     })();
   }, [_open]);
@@ -119,8 +112,8 @@ export default function Modal() {
   }, [initValues]);
 
   return open ? (
-    <div
-      onClick={onClose}
+    <Pressable
+      onPress={onClose}
       style={{
         position: "absolute",
         right: 0,
@@ -129,7 +122,7 @@ export default function Modal() {
         bottom: 0,
       }}
     >
-      <div
+      <Animated.View
         name="backdrop"
         style={{
           backgroundColor: "#0004",
@@ -138,12 +131,11 @@ export default function Modal() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          transition: "opacity 0.2s linear",
-          opacity: animOpacity === 1 ? 1 : 0,
+          opacity: animOpacity,
         }}
       >
         {_open ? (
-          <div
+          <Pressable
             name="container"
             style={{
               width: width || "auto",
@@ -156,9 +148,9 @@ export default function Modal() {
               borderRadius: radius,
               padding: gap,
             }}
-            onClick={(e) => e.stopPropagation()}
+            onPress={(e) => e.stopPropagation()}
           >
-            <div
+            <View
               name="header"
               style={{
                 padding: "8px 8px 12px",
@@ -166,24 +158,24 @@ export default function Modal() {
                 alignItems: "center",
               }}
             >
-              <div style={{ flex: 1 }}>{title}</div>
-              <div
-                onClick={() => onClose()}
-                style={{
-                  cursor: "pointer",
-                  width: 30,
-                  height: 30,
-                }}
-              >
-                {closeIcon}
-              </div>
-            </div>
+              <Text style={{ flex: 1 }}>{title}</Text>
+              <TouchableOpacity onPress={() => onClose()}>
+                <Image
+                  source={require("./icon-x.png")}
+                  resizeMode="contain"
+                  style={{
+                    width: 30,
+                    height: 30,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
 
             {render({ onSubmit, onChange: setValues, onClose, values })}
             {/* onSubmit: resolve (required), onChange: not ready to resolve, onClose: reject (wrap try catch required) */}
-          </div>
+          </Pressable>
         ) : null}
-      </div>
-    </div>
+      </Animated.View>
+    </Pressable>
   ) : null;
 }

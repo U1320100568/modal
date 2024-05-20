@@ -45,3 +45,8 @@ async () => {
 # Defect
 
 It's a singleton modal component. you can involk only once. It's not a big deal. There is a solution that show 2 steps modal (refer to SelectPlan.js ). you can put complex logic in content component independently.
+
+# React Native
+
+- react native use `ModalContext.native.js` instead.
+- `icon-x.png` file is required for close button. Put it in where ModalContext.native.js is.
