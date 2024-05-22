@@ -97,11 +97,13 @@ export default function Modal() {
         Animated.timing(animOpacity, {
           toValue: 1,
           duration: 200,
+          useNativeDriver: true,
         }).start();
       } else {
         Animated.timing(animOpacity, {
           toValue: 0,
           duration: 200,
+          useNativeDriver: true,
         }).start(() => setOpen(false));
       }
     })();
@@ -129,6 +131,7 @@ export default function Modal() {
           width: "100%",
           height: "100%",
           display: "flex",
+          flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
           opacity: animOpacity,
@@ -153,19 +156,23 @@ export default function Modal() {
             <View
               name="header"
               style={{
-                padding: "8px 8px 12px",
+                paddingTop: 8,
+                paddingRight: 8,
+                paddingLeft: 6,
+                paddingBottom: 12,
                 display: "flex",
+                flexDirection: "row",
                 alignItems: "center",
               }}
             >
-              <Text style={{ flex: 1 }}>{title}</Text>
+              <Text style={{ flex: 1, fontSize: 20 }}>{title}</Text>
               <TouchableOpacity onPress={() => onClose()}>
                 <Image
-                  source={require("./icon-x.png")}
+                  source={require("../images/icon-x.png")}
                   resizeMode="contain"
                   style={{
-                    width: 30,
-                    height: 30,
+                    width: 24,
+                    height: 24,
                   }}
                 />
               </TouchableOpacity>

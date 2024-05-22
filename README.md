@@ -49,4 +49,4 @@ It's a singleton modal component. you can involk only once. It's not a big deal.
 # React Native
 
 - react native use `ModalContext.native.js` instead.
-- `icon-x.png` file is required for close button. Put it in where ModalContext.native.js is.
+- `icon-x.png` file is required for close button. Put it in the same folder where ModalContext.native.js is.
